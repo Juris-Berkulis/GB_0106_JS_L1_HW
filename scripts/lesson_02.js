@@ -35,11 +35,26 @@ else {
 
 document.write('<p><b>4. Присвоить переменной а значение в промежутке [0..15]. С помощью оператора switch организовать вывод чисел от a до 15. Дополнительное задание. Сделайте решение вторым способом, используя рекурсию.</b></p>')
 
-var a;
-a = 7;
+var min = 0;
+var max = 16;
+var a = Math.floor(min + Math.random() * (max - min + 1));
 document.write('<p>a = ' + a + '</p>');
 document.write('<span>При помощи switch:</span>');
 switch(a){
+    case 0:
+        document.write('<span> ' + 0 + '</span>');
+    case 1:
+        document.write('<span> ' + 1 + '</span>');
+    case 2:
+        document.write('<span> ' + 2 + '</span>');
+    case 3:
+        document.write('<span> ' + 3 + '</span>');
+    case 4:
+        document.write('<span> ' + 4 + '</span>');
+    case 5:
+        document.write('<span> ' + 5 + '</span>');
+    case 6:
+        document.write('<span> ' + 6 + '</span>');
     case 7:
         document.write('<span> ' + 7 + '</span>');
     case 8:
