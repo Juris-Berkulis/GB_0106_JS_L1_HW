@@ -12,7 +12,7 @@ var products = ['cheese', 'sausage', 'bread'];
 
 function f(event) {
     var imgBig = document.createElement('img');
-    imgBig.width = '1000';
+    imgBig.width = '300';
     imgBigSrc = event.target.src;
     imgBig.src = imgBigSrc;
     var parts1 = imgBigSrc.split('/');
@@ -36,8 +36,8 @@ function images() {
         var imgSrc = 'img/small/' + products[i - 1] + '.jpg'
         img.src = imgSrc;
         img.alt = products[i - 1];
-        img.style.width = '200px';
-        img.style.height = '200px';
+        img.style.width = '100px';
+        img.style.height = '100px';
         img.onclick = f;
         divImgSmall2.append(img);
     }
@@ -49,7 +49,7 @@ var productIndex = 0;
 
 function imgBigParam() {
     var imgBig = document.createElement('img');
-    imgBig.width = '1000';
+    imgBig.width = '300';
     imgBigSrc = 'img/small/' + products[productIndex] + '.jpg'
     imgBig.src = imgBigSrc;
     var parts1 = imgBigSrc.split('/');

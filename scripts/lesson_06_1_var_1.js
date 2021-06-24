@@ -18,7 +18,7 @@ var errorImg = 'Большое изображение не найдено!';
 function f(event) {
     var imgBigSrc = event.target.src.replace('small', 'big');
     var imgBig = document.createElement('img');
-    imgBig.width = '1000';
+    imgBig.width = '300';
     imgBig.src = imgBigSrc;
     var parts1 = imgBigSrc.split('/');
     var parts2 = parts1[parts1.length - 1].split('.');
@@ -41,8 +41,8 @@ function images() {
         var img = document.createElement('img');
         img.src = 'img/small/' + products[i - 1] + '.jpg';
         img.alt = products[i - 1];
-        img.style.width = '200px';
-        img.style.height = '200px';
+        img.style.width = '100px';
+        img.style.height = '100px';
         img.onclick = f;
         divImgSmall.append(img);
     }
