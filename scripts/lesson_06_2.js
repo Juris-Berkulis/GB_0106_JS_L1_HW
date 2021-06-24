@@ -1,38 +1,86 @@
-//! Вариант 2 для первого задания шестого урока
-//! (Переместить в index.html и раскомментировать):
-//! {/* <div class="img_small">
-//!     <img src="img/small/cheese.jpg" alt="cheese" width="200px" height="200px">;
-//!     <img src="img/small/sausage.jpg" alt="sausage" width="200px" height="200px">;
-//!     <img src="img/small/bread.jpg" alt="bread" width="200px" height="200px">;
-//! </div>
-//! <div class="img_big"></div> */}
-
 var body = document.querySelector('body');
-var divSmall = document.querySelector('.img_small');
-var divBig = document.querySelector('.img_big');
-var images = document.querySelectorAll('img');
-var errorImg = 'Большое изображение не найдено!';
 
-for (var itemImg of images) {
-    itemImg.onclick = f;
-}
+var p = document.createElement('p');
+p.innerHTML = '3. *Добавить в галерею функцию перехода к следующему изображению. По сторонам от большой картинки должны быть стрелки «вперед» и «назад», по нажатию на которые происходит замена изображения на следующее или предыдущее.';
+p.style.fontWeight = 'bold';
+body.append(p);
+
+var divImgBig2 = document.createElement('div');
+var divImgSmall2 = document.createElement('div');
+var divButton = document.createElement('div');
+var products = ['cheese', 'sausage', 'bread'];
 
 function f(event) {
-    var imgBigSrc = event.target.src.replace('small', 'big');
     var imgBig = document.createElement('img');
     imgBig.width = '1000';
+    imgBigSrc = event.target.src;
     imgBig.src = imgBigSrc;
-    imgBig.onerror = ImgNotFound;
-    divBig.innerHTML = '';
-    divBig.append(imgBig);
+    var parts1 = imgBigSrc.split('/');
+    var parts2 = parts1[parts1.length - 1].split('.');
+    imgBig.alt = parts2[0];
+    divImgBig2.innerHTML = '';
+    divImgBig2.append(imgBig);
+    var i = 0;
+    for (var product of products) {
+        if (product == imgBig.alt) {
+            productIndex = i;
+            break;
+        }
+        i++;
+    }
 }
 
-function ImgNotFound() {
-    var p = document.createElement('p');
-    p.innerHTML = errorImg;
-    divBig.innerHTML = '';
-    divBig.append(p);
-    alert(errorImg);
+function images() {
+    for (var i = 1; i <= products.length; i++) {
+        var img = document.createElement('img');
+        var imgSrc = 'img/small/' + products[i - 1] + '.jpg'
+        img.src = imgSrc;
+        img.alt = products[i - 1];
+        img.style.width = '200px';
+        img.style.height = '200px';
+        img.onclick = f;
+        divImgSmall2.append(img);
+    }
 }
 
-body.append(divBig);
+images();
+
+var productIndex = 0;
+
+function imgBigParam() {
+    var imgBig = document.createElement('img');
+    imgBig.width = '1000';
+    imgBigSrc = 'img/small/' + products[productIndex] + '.jpg'
+    imgBig.src = imgBigSrc;
+    var parts1 = imgBigSrc.split('/');
+    var parts2 = parts1[parts1.length - 1].split('.');
+    imgBig.alt = parts2[0];
+    divImgBig2.append(imgBig);
+}
+
+imgBigParam();
+
+function imgBack() {
+    (productIndex == 0) ? productIndex = products.length - 1 : productIndex--;
+    divImgBig2.innerHTML = '';
+    imgBigParam();
+}
+
+function imgNext() {
+    (productIndex == products.length - 1) ? productIndex = 0 : productIndex++;
+    divImgBig2.innerHTML = '';
+    imgBigParam();
+}
+
+var buttonBack = document.createElement('button');
+var buttonNext = document.createElement('button');
+buttonBack.innerText = 'Назад';
+buttonNext.innerText = 'Вперёд';
+buttonBack.onclick = imgBack;
+buttonNext.onclick = imgNext;
+divButton.append(buttonBack);
+divButton.append(buttonNext);
+
+body.append(divButton);
+body.append(divImgSmall2);
+body.append(divImgBig2);
