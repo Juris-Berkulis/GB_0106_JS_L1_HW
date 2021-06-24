@@ -62,13 +62,13 @@ function f(event) {
     var basketCardPriceText = foodstuffs[btnNumber - 1].price;
     totalAmount += foodstuffs[btnNumber - 1].price;
     basketTotalAmount.innerText = '';
-    basketTotalAmount.append('Итого: ' + totalAmount);
+    basketTotalAmount.append('Итого: ' + totalAmount + ' руб.');
     productCount(basketCardNameText, basketCardPriceText);
 
     divBasket.innerText = '';
     for (var item of mas) {
         var basketCard = document.createElement('div');
-        basketCard.append(item[0] + ' - ' + item[1] + ' - ' + item[2]);
+        basketCard.append(item[0] + ' за ' + item[1] + ' руб.: ' + item[2] + ' шт.');
         divBasket.append(basketCard);
     }
 }
