@@ -68,7 +68,7 @@ function f(event) {
     divBasket.innerText = '';
     for (var item of mas) {
         var basketCard = document.createElement('div');
-        basketCard.append(item[0] + ' за ' + item[1] + ' руб.: ' + item[2] + ' шт.');
+        basketCard.append(item[0] + ' за ' + item[1] + ' руб.: ' + item[2] + ' шт. - ' + (item[2] * item[1]) + ' руб.');
         divBasket.append(basketCard);
     }
 }
