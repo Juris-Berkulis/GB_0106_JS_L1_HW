@@ -128,12 +128,15 @@ function move() {
         new_unit = document.getElementsByClassName('cell-' + (coord_y + 1) + '-' + (coord_x))[0];
     }
 
+    if (new_unit === undefined) {
+        new_unit = headTeleport(coord_y, coord_x);
+    }
+
     // Проверки
     // 1) new_unit не часть змейки
-    // 2) Змейка не ушла за границу поля
-    // 3) Змейка не съела яд
-    //console.log(new_unit);
-    if (!isSnakeUnit(new_unit) && new_unit !== undefined && !new_unit.classList.contains('poison-unit')) {
+    // 2) Змейка не съела яд
+    // console.log(new_unit);
+    if (!isSnakeUnit(new_unit) && !new_unit.classList.contains('poison-unit')) {
         // Добавление новой части змейки
         new_unit.setAttribute('class', new_unit.getAttribute('class') + ' snake-unit');
         snake.push(new_unit);
@@ -151,6 +154,23 @@ function move() {
     else {
         finishTheGame();
     }
+}
+
+function headTeleport(coord_y, coord_x) {
+    var severedHead;
+    if (direction == 'x-') {
+        severedHead = document.querySelector('.cell-' + coord_y + '-' + (FIELD_SIZE_X - 1));
+    }
+    else if (direction == 'x+') {
+        severedHead = document.querySelector('.cell-' + coord_y + '-' + 0);
+    }
+    else if (direction == 'y-') {
+        severedHead = document.querySelector('.cell-' + 0 + '-' + coord_x);
+    }
+    else if (direction == 'y+') {
+        severedHead = document.querySelector('.cell-' + (FIELD_SIZE_Y - 1) + '-' + coord_x);
+    }
+    return severedHead;
 }
 
 /**
