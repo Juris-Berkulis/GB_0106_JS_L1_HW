@@ -2,10 +2,14 @@
 var FIELD_SIZE_X = 20;//строки
 var FIELD_SIZE_Y = 20;//столбцы
 var SNAKE_SPEED = 200; // Интервал между перемещениями змейки
+var CREATE_POISON_SPEED = 10000;
+var DELETE_POISON_SPEED = 12000;
 var snake = []; // Сама змейка
 var direction = 'y+'; // Направление движения змейки
 var gameIsRunning = false; // Запущена ли игра
 var snake_timer; // Таймер змейки
+var createPoisonTimer;
+var deletePoisonTimer;
 var food_timer; // Таймер для еды
 var score = 0; // Результат
 var divScore = document.getElementById('score');
@@ -70,6 +74,8 @@ function startGame() {
 
     snake_timer = setInterval(move, SNAKE_SPEED);//каждые 200мс запускаем функцию move
     setTimeout(createFood, 5000);
+    createPoisonTimer = setInterval(createPoison, CREATE_POISON_SPEED);
+    deletePoisonTimer = setInterval(deletePoison, DELETE_POISON_SPEED);
 }
 
 /**
@@ -125,8 +131,9 @@ function move() {
     // Проверки
     // 1) new_unit не часть змейки
     // 2) Змейка не ушла за границу поля
+    // 3) Змейка не съела яд
     //console.log(new_unit);
-    if (!isSnakeUnit(new_unit) && new_unit !== undefined) {
+    if (!isSnakeUnit(new_unit) && new_unit !== undefined && !new_unit.classList.contains('poison-unit')) {
         // Добавление новой части змейки
         new_unit.setAttribute('class', new_unit.getAttribute('class') + ' snake-unit');
         snake.push(new_unit);
@@ -195,7 +202,7 @@ function createFood() {
         var food_cell_classes = food_cell.getAttribute('class').split(' ');
 
         // проверка на змейку
-        if (!food_cell_classes.includes('snake-unit')) {
+        if (!food_cell_classes.includes('snake-unit') && !food_cell_classes.includes('poison-unit')) {
             var classes = '';
             for (var i = 0; i < food_cell_classes.length; i++) {
                 classes += food_cell_classes[i] + ' ';
@@ -205,6 +212,32 @@ function createFood() {
             foodCreated = true;
         }
     }
+}
+
+function createPoison() {
+    var poisonCreated = false;
+
+    while (!poisonCreated) { //пока яд не создали
+        // рандом
+        var poison_x = Math.floor(Math.random() * FIELD_SIZE_X);
+        var poison_y = Math.floor(Math.random() * FIELD_SIZE_Y);
+
+        var poison_cell = document.querySelector('.cell-' + poison_y + '-' + poison_x);
+        var poison_cell_classes = poison_cell.getAttribute('class').split(' ');
+
+        // проверка на змейку
+        if (!poison_cell_classes.includes('snake-unit') && !poison_cell_classes.includes('food-unit') && !poison_cell_classes.includes('poison-unit')) {
+            poison_cell.classList.add('poison-unit');
+            poisonCreated = true;
+        }
+    }
+}
+
+function deletePoison() {
+    var allPoison = document.querySelectorAll('.poison-unit');
+    var poisonNumber = Math.floor(Math.random() * allPoison.length);
+    var specificPoison = document.querySelectorAll('.poison-unit')[poisonNumber];
+    specificPoison.classList.remove('poison-unit');
 }
 
 /**
@@ -243,6 +276,8 @@ function changeDirection(e) {
 function finishTheGame() {
     gameIsRunning = false;
     clearInterval(snake_timer);
+    clearInterval(createPoisonTimer);
+    clearInterval(deletePoisonTimer);
     alert('Вы проиграли! Ваш результат: ' + score.toString());
 }
 
