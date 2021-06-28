@@ -70,12 +70,8 @@ function prepareGameField() {
  */
 function startGame() {
     gameIsRunning = true;
-    respawn();//создали змейку
-
-    snake_timer = setInterval(move, SNAKE_SPEED);//каждые 200мс запускаем функцию move
-    setTimeout(createFood, 5000);
-    createPoisonTimer = setInterval(createPoison, CREATE_POISON_SPEED);
-    deletePoisonTimer = setInterval(deletePoison, DELETE_POISON_SPEED);
+    var createTimers = respawn();//создали змейку
+    createTimers();
 }
 
 /**
@@ -98,6 +94,13 @@ function respawn() {
 
     snake.push(snake_tail);
     snake.push(snake_head);
+
+    return function() {
+        snake_timer = setInterval(move, SNAKE_SPEED);//каждые 200мс запускаем функцию move
+        setTimeout(createFood, 5000);
+        createPoisonTimer = setInterval(createPoison, CREATE_POISON_SPEED);
+        deletePoisonTimer = setInterval(deletePoison, DELETE_POISON_SPEED);
+    }
 }
 
 /**
@@ -199,8 +202,8 @@ function haveFood(unit) {
     // Если еда
     if (unit_classes.includes('food-unit')) {
         check = true;
-        createFood();
-        score++;
+        var addScore = createFood();
+        addScore();
         divScore.innerText = '';
         divScore.append('Счёт: ' + score);
     }
@@ -231,6 +234,9 @@ function createFood() {
             food_cell.setAttribute('class', classes + 'food-unit');
             foodCreated = true;
         }
+    }
+    return function() {
+        score++;
     }
 }
 

@@ -1,5 +1,9 @@
 var body = document.querySelector('body');
 
+var h2 = document.createElement('h2');
+h2.innerText = 'Lesson 7';
+body.append(h2);
+
 var p = document.createElement('p');
 p.innerHTML = '1. Выводить счёт в режиме реального времени.';
 p.style.fontWeight = 'bold';
